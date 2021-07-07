@@ -95,67 +95,35 @@ const current_version = "1.0.0";
 
 module.exports = class Stepper
 {
-
     /*
-    * two-wire constructor.
-    * Sets which wires should control the motor.
+    *   constructor for stepper motors with two to five wires
+    *   Sets which wires should control the motor.
     */
-    constructor(motor_pin_1, motor_pin_2, number_of_steps)
+    constructor(number_of_steps, motor_pin_1, motor_pin_2, motor_pin_3, motor_pin_4, motor_pin_5)
     {
         this.motor_pin_1 = new Gpio(motor_pin_1, 'out');
         this.motor_pin_2 = new Gpio(motor_pin_2, 'out');
-
-        this.step_number = 0;
-        this.direction = 0;
-        this.last_step_time = 0;
-        this.number_of_steps = number_of_steps;
-
         this.pin_count = 2;
 
-        console.log("Two-wire stepper initialized!")
-    }
+        if (motor_pin_3 != null && motor_pin_4 != null)
+        {
+            this.motor_pin_3 = new Gpio(motor_pin_3, 'out');
+            this.motor_pin_4 = new Gpio(motor_pin_4, 'out');
+            this.pin_count = 4;
+        }
+        if (motor_pin_5 != null)
+        {
 
-    /*
-    *   constructor for four-pin version
-    *   Sets which wires should control the motor.
-    */
-    constructor(motor_pin_1, motor_pin_2, motor_pin_3, motor_pin_4, number_of_steps)
-    {
-        this.motor_pin_1 = new Gpio(motor_pin_1, 'out');
-        this.motor_pin_2 = new Gpio(motor_pin_2, 'out');
-        this.motor_pin_3 = new Gpio(motor_pin_3, 'out');
-        this.motor_pin_4 = new Gpio(motor_pin_4, 'out');
-
-        this.step_number = 0;
-        this.direction = 0;
-        this.last_step_time = 0;
-        this.number_of_steps = number_of_steps;
-
-        this.pin_count = 4;
-
-        console.log("Four-wire stepper initialized!")
-    }
-
-    /*
-    *   constructor for five phase motor with five wires
-    *   Sets which wires should control the motor.
-    */
-    constructor(motor_pin_1, motor_pin_2, motor_pin_3, motor_pin_4, motor_pin_5, number_of_steps)
-    {
-        this.motor_pin_1 = new Gpio(motor_pin_1, 'out');
-        this.motor_pin_2 = new Gpio(motor_pin_2, 'out');
-        this.motor_pin_3 = new Gpio(motor_pin_3, 'out');
-        this.motor_pin_4 = new Gpio(motor_pin_4, 'out');
-        this.motor_pin_5 = new Gpio(motor_pin_5, 'out');
+            this.motor_pin_5 = new Gpio(motor_pin_5, 'out');
+            this.pin_count = 5;
+        }
 
         this.step_number = 0;
         this.direction = 0;
         this.last_step_time = 0;
         this.number_of_steps = number_of_steps;
 
-        this.pin_count = 5;
-
-        console.log("Five-wire stepper initialized!")
+        console.log("Stepper with", this.pin_count, "wires initialized! Selected number of steps:", this.number_of_steps, ".");
     }
 
     /*
