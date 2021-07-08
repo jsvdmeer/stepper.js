@@ -122,8 +122,6 @@ module.exports = class Stepper
         this.direction = 0;
         this.last_step_time = 0;
         this.number_of_steps = number_of_steps;
-
-        console.log("Stepper with", this.pin_count, "wires initialized! Selected number of steps:", this.number_of_steps, ".");
     }
 
     /*
@@ -133,8 +131,6 @@ module.exports = class Stepper
     {
         // delay in ms
         this.step_delay = 60 * 1000 * 1000 / this.number_of_steps / speed;
-
-        console.log("Setting speed to:", this.step_delay, "rpm.");
     }
 
     /*
@@ -143,7 +139,6 @@ module.exports = class Stepper
     */
     step(steps_to_move)
     {
-        console.log("Moving", steps_to_move, "steps.")
         // how many steps to take
         let steps_left = Math.abs(steps_to_move);
 
@@ -190,13 +185,15 @@ module.exports = class Stepper
                 }
                 else
                 {
-                    this.stepMotor(this.step_number % 4);
+                    this.stepMotor(this.step_number % 8);
                 }
             }
-
         }
     }
 
+    /*
+    * Moves the motor forward or backwards.
+    */
     stepMotor(thisStep)
     {
         if (this.pin_count == 2)
@@ -228,22 +225,46 @@ module.exports = class Stepper
                 case 0:  // 1010
                     this.digitalWrite(this.motor_pin_1, HIGH);
                     this.digitalWrite(this.motor_pin_2, LOW);
-                    this.digitalWrite(this.motor_pin_3, HIGH);
+                    this.digitalWrite(this.motor_pin_3, LOW);
                     this.digitalWrite(this.motor_pin_4, LOW);
                     break;
                 case 1:  // 0110
-                    this.digitalWrite(this.motor_pin_1, LOW);
+                    this.digitalWrite(this.motor_pin_1, HIGH);
                     this.digitalWrite(this.motor_pin_2, HIGH);
-                    this.digitalWrite(this.motor_pin_3, HIGH);
+                    this.digitalWrite(this.motor_pin_3, LOW);
                     this.digitalWrite(this.motor_pin_4, LOW);
                     break;
                 case 2:  //0101
                     this.digitalWrite(this.motor_pin_1, LOW);
                     this.digitalWrite(this.motor_pin_2, HIGH);
                     this.digitalWrite(this.motor_pin_3, LOW);
-                    this.digitalWrite(this.motor_pin_4, HIGH);
+                    this.digitalWrite(this.motor_pin_4, LOW);
                     break;
                 case 3:  //1001
+                    this.digitalWrite(this.motor_pin_1, LOW);
+                    this.digitalWrite(this.motor_pin_2, HIGH);
+                    this.digitalWrite(this.motor_pin_3, HIGH);
+                    this.digitalWrite(this.motor_pin_4, LOW);
+                    break;
+                case 4:  //1001
+                    this.digitalWrite(this.motor_pin_1, LOW);
+                    this.digitalWrite(this.motor_pin_2, LOW);
+                    this.digitalWrite(this.motor_pin_3, HIGH);
+                    this.digitalWrite(this.motor_pin_4, LOW);
+                    break;
+                case 5:  //1001
+                    this.digitalWrite(this.motor_pin_1, LOW);
+                    this.digitalWrite(this.motor_pin_2, LOW);
+                    this.digitalWrite(this.motor_pin_3, HIGH);
+                    this.digitalWrite(this.motor_pin_4, HIGH);
+                    break;
+                case 6:  //1001
+                    this.digitalWrite(this.motor_pin_1, LOW);
+                    this.digitalWrite(this.motor_pin_2, LOW);
+                    this.digitalWrite(this.motor_pin_3, LOW);
+                    this.digitalWrite(this.motor_pin_4, HIGH);
+                    break;
+                case 7:  //1001
                     this.digitalWrite(this.motor_pin_1, HIGH);
                     this.digitalWrite(this.motor_pin_2, LOW);
                     this.digitalWrite(this.motor_pin_3, LOW);
